@@ -1,6 +1,6 @@
 import path, { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { readFileSync } from 'node:fs'
+import { readFileSync, realpathSync } from 'node:fs'
 
 const { version } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url)).toString(),
@@ -78,10 +78,12 @@ export const NULL_BYTE_PLACEHOLDER = `__x00__`
 
 export const CLIENT_PUBLIC_PATH = `/@vite/client`
 export const ENV_PUBLIC_PATH = `/@vite/env`
-export const VITE_PACKAGE_DIR = resolve(
-  // import.meta.url is `dist/node/constants.js` after bundle
-  fileURLToPath(import.meta.url),
-  '../../..',
+export const VITE_PACKAGE_DIR = realpathSync(
+  resolve(
+    // import.meta.url is `dist/node/constants.js` after bundle
+    fileURLToPath(import.meta.url),
+    '../../..',
+  ),
 )
 
 export const CLIENT_ENTRY = resolve(VITE_PACKAGE_DIR, 'dist/client/client.mjs')
